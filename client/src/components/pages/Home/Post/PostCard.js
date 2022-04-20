@@ -68,18 +68,18 @@ export const PostCard = ({ post }) => {
   }
   useEffect(() => {
     if (!userContext.loading) {
-      // console.log(userContext.user.bookmark.post)
-      userContext.user.bookmark.post.forEach((element) => {
+      // console.log(userContext.user?.bookmark.post)
+      userContext.user?.bookmark.post.forEach((element) => {
         if (element._id === post._id) {
           setBookmarkStatus(true)
         }
       })
-      // if (userContext.user.bookmark.post.includes(post._id)) {
+      // if (userContext.user?.bookmark.post.includes(post._id)) {
       //   setBookmarkStatus(true)
       // } else {
       //   setBookmarkStatus(false)
       // }
-      // userContext.user.bookmark.post.map((item) => {
+      // userContext.user?.bookmark.post.map((item) => {
       //   if (item._id === post._id) {
       //     setBookmarkStatus(true)
       //   } else {
@@ -88,28 +88,28 @@ export const PostCard = ({ post }) => {
       //   return 0
       // })
     }
-  }, [post._id, userContext.loading, userContext.user.bookmark.post])
+  }, [post._id, userContext.loading, userContext.user?.bookmark.post])
   useEffect(() => {
     // post.likes.filter((like) => {
-    //   if (like === authContext.user._id) {
+    //   if (like === authContext.user?._id) {
     //     setLikeStatus(true)
     //   } else {
     //     setLikeStatus(false)
     //   }
-    if (post.likes.includes(authContext.user._id)) {
+    if (post.likes.includes(authContext.user?._id)) {
       setLikeStatus(true)
     } else {
       setLikeStatus(false)
     }
-  }, [authContext.user._id, post.likes])
+  }, [authContext.user?._id, post.likes])
 
   const handleLikeBtn = () => {
     if (!likeStatus) {
-      postContext.likePost(post._id, authContext.user._id)
+      postContext.likePost(post._id, authContext.user?._id)
       setLikeCount(likeCount + 1)
       setLikeStatus(true)
     } else {
-      postContext.unLikePost(post._id, authContext.user._id)
+      postContext.unLikePost(post._id, authContext.user?._id)
       setLikeCount(likeCount - 1)
       setLikeStatus(false)
     }
@@ -120,15 +120,15 @@ export const PostCard = ({ post }) => {
       typeId: post._id,
     }
     if (!bookmarkStatus) {
-      userContext.bookmarkItem(authContext.user._id, formData)
+      userContext.bookmarkItem(authContext.user?._id, formData)
       setBookmarkStatus(true)
     } else {
-      userContext.unBookmarkItem(authContext.user._id, formData)
+      userContext.unBookmarkItem(authContext.user?._id, formData)
       setBookmarkStatus(false)
     }
   }
   const handleCommentSend = async () => {
-    await postContext.addComment(post._id, authContext.user._id, comment)
+    await postContext.addComment(post._id, authContext.user?._id, comment)
   }
   return (
     <Card variant="elevation" elevation={3} className="mb-3">
@@ -144,8 +144,8 @@ export const PostCard = ({ post }) => {
       <CardHeader
         avatar={
           <Avatar
-            alt={post.user.name}
-            src={`${API}/pic/user/${post.user._id}`}
+            alt={post.user?.name}
+            src={`${API}/pic/user/${post.user?._id}`}
           />
         }
         action={
@@ -161,13 +161,13 @@ export const PostCard = ({ post }) => {
               onClose={handleClose}
               TransitionComponent={Fade}
             >
-              {authContext.user._id === post.user._id ? (
+              {authContext.user?._id === post.user?._id ? (
                 <MenuItem onClick={handleModalPost}>Edit</MenuItem>
               ) : null}
-              {authContext.user._id === post.user._id ? (
+              {authContext.user?._id === post.user?._id ? (
                 <MenuItem
                   onClick={() => {
-                    postContext.deletePost(authContext.user._id, post._id)
+                    postContext.deletePost(authContext.user?._id, post._id)
                     handleClose()
                   }}
                 >
@@ -185,10 +185,10 @@ export const PostCard = ({ post }) => {
           <b
             style={{ cursor: "pointer" }}
             onClick={() => {
-              history.push(`/profile/${post.user._id}`)
+              history.push(`/profile/${post.user?._id}`)
             }}
           >
-            {post.user.name}
+            {post.user?.name}
           </b>
         }
         subheader={<Moment fromNow>{post.createdAt}</Moment>}
@@ -258,7 +258,7 @@ export const PostCard = ({ post }) => {
                 return (
                   <span style={{ display: "flex" }} key={comment._id}>
                     <Typography variant="body2" className="pr-3">
-                      <b>{comment.user.name}</b>
+                      <b>{comment.user?.name}</b>
                     </Typography>
                     <Typography variant="subtitle2">{comment.text}</Typography>
                   </span>
